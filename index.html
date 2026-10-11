@@ -1,0 +1,253 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section with Proper Grid Layout -->
+<div class="row align-items-center" style="min-height: 75vh; padding-top: 20px;">
+    
+    <!-- Left Side Content Column -->
+    <div class="col-lg-5 col-md-12 pe-lg-3 mb-5 mb-lg-0">
+        <div class="welcome-hero-content py-2">
+            <h1 class="display-5 fw-bold text-white mb-3" style="letter-spacing: -0.5px; line-height: 1.2;">
+                Welcome to <span class="text-white">Core</span><span class="wordart-x">X</span> <span class="text-info fw-normal">Solutions</span>
+            </h1>
+            <p class="lead mb-4 fs-6" style="line-height: 1.7; color: #cbd5e1 !important;">
+                The core of Next-Gen Tech. We specialize in developing all kinds of professional software solutions, advanced POS systems, and fully customized software tailored specifically to empower your company's unique workflow and business growth.
+            </p>
+            
+            <!-- Action Buttons -->
+            <div class="d-flex flex-wrap gap-3 mt-4">
+                <a href="#our-services" class="btn btn-info px-4 py-2.5 rounded-pill fw-semibold shadow-lg text-dark d-flex align-items-center gap-2" style="background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); border: none;">
+                    <i class="bi bi-rocket-takeoff-fill"></i> Explore Services
+                </a>
+                <a href="#contact-section" class="btn btn-outline-light px-4 py-2.5 rounded-pill fw-semibold d-flex align-items-center gap-2" style="backdrop-filter: blur(10px); border-color: rgba(255, 255, 255, 0.2);">
+                    <i class="bi bi-envelope-fill"></i> Contact Us
+                </a>
+            </div>
+
+            <!-- Quick Stats / Highlights below -->
+            <div class="row mt-4 pt-3 border-top border-secondary border-opacity-25" style="max-width: 480px;">
+                <div class="col-4">
+                    <h4 class="fw-bold text-info mb-0" style="font-size: 1.25rem;">Custom</h4>
+                    <span class="text-light fw-semibold" style="font-size: 0.85rem; opacity: 0.9;">Software</span>
+                </div>
+                <div class="col-4">
+                    <h4 class="fw-bold text-info mb-0" style="font-size: 1.25rem;">Advanced</h4>
+                    <span class="text-light fw-semibold" style="font-size: 0.85rem; opacity: 0.9;">POS Systems</span>
+                </div>
+                <div class="col-4">
+                    <h4 class="fw-bold text-info mb-0" style="font-size: 1.25rem;">24/7</h4>
+                    <span class="text-light fw-semibold" style="font-size: 0.85rem; opacity: 0.9;">Support</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Right Side 3D Banner Column -->
+    <div class="col-lg-7 col-md-12 text-center text-lg-end">
+        <div class="right-banner-wrapper" style="position: relative; display: inline-block; width: 100%; max-width: 720px;">
+            <div style="border-radius: 24px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8); background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(12px);">
+                <img src="https://zlquamdyrewvwjbnalpz.supabase.co/storage/v1/object/public/corexsolutions/logo_bg.webp" alt="CoreX 3D Background" class="img-fluid w-100" style="height: 460px; object-fit: cover; object-position: center; opacity: 0.95;" onerror="this.style.display='none'">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Latest Announcements Section (Showing only top 2 latest posts with See More button) -->
+<div id="announcements-section" class="row mt-5 pt-5 border-top border-secondary border-opacity-25">
+    <div class="col-12 mb-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+            <h2 class="fw-bold text-white display-6 mb-2"><i class="bi bi-megaphone-fill text-info me-2"></i>Latest Announcements</h2>
+            <p class="text-light mb-0" style="opacity: 0.8;">Stay updated with our latest news, features, and announcements</p>
+        </div>
+        {% if posts and posts|length > 2 %}
+        <div>
+            <a href="/announcements" class="btn btn-outline-info rounded-pill px-4 fw-semibold" style="backdrop-filter: blur(10px);">
+                View All <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    {% if posts %}
+        <div class="row">
+            <!-- Loop through posts but limit to only the first 2 (latest 2 posts) -->
+            {% for post in posts[:2] %}
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 shadow-lg border-secondary border-opacity-25 overflow-hidden" style="background: rgba(15, 23, 42, 0.85); border-radius: 16px;">
+                    <div class="p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h3 class="fw-bold text-white mb-0">{{ post.title }}</h3>
+                            <span class="badge bg-info text-dark px-3 py-1 rounded-pill" style="font-size: 0.75rem;">Latest</span>
+                        </div>
+                        <p class="fs-6 mb-3 text-light" style="line-height: 1.6; opacity: 0.9;">{{ post.content }}</p>
+                    </div>
+
+                    <!-- Display Uploaded Image or Video if available -->
+                    {% if post.media_file %}
+                        <div class="bg-dark text-center border-top border-secondary border-opacity-25 mt-auto">
+                            {% if post.media_type == 'image' %}
+                                <img src="{{ url_for('static', filename='uploads/' + post.media_file) }}" alt="Post Media" class="img-fluid w-100" style="max-height: 280px; object-fit: cover;">
+                            {% elif post.media_type == 'video' %}
+                                <video controls class="w-100" style="max-height: 280px; background: #000;">
+                                    <source src="{{ url_for('static', filename='uploads/' + post.media_file) }}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- See More Button Centered below the 2 posts (if posts count > 2) -->
+        {% if posts|length > 2 %}
+        <div class="col-12 text-center mt-3 mb-2">
+            <a href="/announcements" class="btn btn-info px-5 py-3 rounded-pill fw-semibold text-dark shadow-lg d-inline-flex align-items-center gap-2" style="background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); border: none;">
+                <i class="bi bi-megaphone-fill"></i> See More Announcements <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+        {% endif %}
+
+    {% else %}
+        <div class="col-12">
+            <div class="card p-4 border-secondary border-opacity-25 text-center w-100" style="background: rgba(15, 23, 42, 0.85); border-radius: 16px;">
+                <p class="text-light mb-0" style="opacity: 0.8;">No announcements published yet. Check back later!</p>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Our Services Section -->
+<div id="our-services" class="row mt-5 pt-5 border-top border-secondary border-opacity-25">
+    <div class="col-12 text-center mb-5">
+        <h2 class="fw-bold text-white display-6">Our <span class="text-info">Services</span></h2>
+        <p class="text-light" style="opacity: 0.8;">What we provide to elevate your business to the next level</p>
+    </div>
+
+    <!-- Service Card 1: POS Systems -->
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 p-4 border-secondary border-opacity-25" style="background: rgba(15, 23, 42, 0.85); border-radius: 16px;">
+            <div class="mb-3 text-info fs-2">
+                <i class="bi bi-shop"></i>
+            </div>
+            <h4 class="fw-bold text-white mb-3">POS Systems</h4>
+            <p class="fs-6 mb-4" style="line-height: 1.6; color: #cbd5e1 !important;">
+                Fast, secure, and user-friendly Point of Sale systems designed for retail stores, supermarkets, and restaurants to manage sales effortlessly.
+            </p>
+            <a href="/services/pos" class="text-info text-decoration-none fw-semibold mt-auto d-flex align-items-center gap-1 pt-2">
+                 Learn More <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Service Card 2: Custom Software -->
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 p-4 border-secondary border-opacity-25" style="background: rgba(15, 23, 42, 0.85); border-radius: 16px;">
+            <div class="mb-3 text-info fs-2">
+                <i class="bi bi-code-slash"></i>
+            </div>
+            <h4 class="fw-bold text-white mb-3">Custom Software</h4>
+            <p class="fs-6 mb-4" style="line-height: 1.6; color: #cbd5e1 !important;">
+                Specialized software solutions tailored specifically according to your company's unique workflow, automation needs, and business requirements.
+            </p>
+            <a href="/services/custom-software" class="text-info text-decoration-none fw-semibold mt-auto d-flex align-items-center gap-1 pt-2">
+                Learn More <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Service Card 3: Enterprise & Company Solutions -->
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 p-4 border-secondary border-opacity-25" style="background: rgba(15, 23, 42, 0.85); border-radius: 16px;">
+            <div class="mb-3 text-info fs-2">
+                <i class="bi bi-building-gear"></i>
+            </div>
+            <h4 class="fw-bold text-white mb-3">Company Solutions</h4>
+            <p class="fs-6 mb-4" style="line-height: 1.6; color: #cbd5e1 !important;">
+                End-to-end technological infrastructure, database architecture, and ongoing 24/7 technical support for corporate businesses.
+            </p>
+            <a href="/services/company-solutions" class="text-info text-decoration-none fw-semibold mt-auto d-flex align-items-center gap-1 pt-2">
+                Learn More <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Contact Us Section -->
+<div id="contact-section" class="row mt-5 pt-5 border-top border-secondary border-opacity-25 mb-5">
+    <div class="col-12 text-center mb-5">
+        <h2 class="fw-bold text-white display-6">Get in Touch With <span class="text-info">Us</span></h2>
+        <p class="text-light" style="opacity: 0.8;">Have a project in mind or need a custom software solution? Reach out to us today.</p>
+    </div>
+
+    <!-- Call Us Card with BOTH Numbers (Phone & WhatsApp) -->
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card h-100 p-4 border-secondary border-opacity-25 text-center" style="background: rgba(15, 23, 42, 0.85); border-radius: 16px;">
+            <div class="mb-3 text-info fs-1">
+                <i class="bi bi-telephone-fill"></i>
+            </div>
+            <h5 class="fw-bold text-white mb-3">Call Us</h5>
+            
+            <!-- Phone Number -->
+            <div class="mb-3">
+                <span class="text-light d-block" style="font-size: 0.75rem; opacity: 0.7;">Phone:</span>
+                <a href="tel:{% if contact and contact.phone %}{{ contact.phone }}{% else %}+94771408694{% endif %}" class="text-light text-decoration-none fw-semibold" style="font-size: 0.95rem; transition: color 0.3s;" onmouseover="this.style.color='#0ea5e9'" onmouseout="this.style.color='#f8f9fa'">
+                    {% if contact and contact.phone %}{{ contact.phone }}{% else %}+94 771408694{% endif %}
+                </a>
+            </div>
+
+            <!-- WhatsApp Number inside Call Us card -->
+            <div>
+                <span class="text-light d-block" style="font-size: 0.75rem; opacity: 0.7;">WhatsApp:</span>
+                <a href="tel:{% if contact and contact.whatsapp %}{{ contact.whatsapp }}{% else %}+94701249304{% endif %}" class="text-light text-decoration-none fw-semibold" style="font-size: 0.95rem; transition: color 0.3s;" onmouseover="this.style.color='#0ea5e9'" onmouseout="this.style.color='#f8f9fa'">
+                    {% if contact and contact.whatsapp %}{{ contact.whatsapp }}{% else %}+94 701249304{% endif %}
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- WhatsApp Card (ONLY WhatsApp Number with Direct Chat Link) -->
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card h-100 p-4 border-secondary border-opacity-25 text-center" style="background: rgba(15, 23, 42, 0.85); border-radius: 16px;">
+            <div class="mb-3 text-success fs-1">
+                <i class="bi bi-whatsapp"></i>
+            </div>
+            <h5 class="fw-bold text-white mb-3">WhatsApp</h5>
+            <p class="mb-0 pt-2">
+                <a href="https://wa.me/{% if contact and contact.whatsapp %}{{ contact.whatsapp | replace(' ', '') | replace('+', '') }}{% else %}94701249304{% endif %}" target="_blank" class="text-light text-decoration-none fw-semibold" style="font-size: 0.95rem; transition: color 0.3s;" onmouseover="this.style.color='#25D366'" onmouseout="this.style.color='#f8f9fa'">
+                    {% if contact and contact.whatsapp %}{{ contact.whatsapp }}{% else %}+94 701249304{% endif %}
+                </a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Email Card -->
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card h-100 p-4 border-secondary border-opacity-25 text-center" style="background: rgba(15, 23, 42, 0.85); border-radius: 16px;">
+            <div class="mb-3 text-info fs-1">
+                <i class="bi bi-envelope-at-fill"></i>
+            </div>
+            <h5 class="fw-bold text-white mb-3">Email Us</h5>
+            <p class="mb-0 pt-2 text-break">
+                <a href="mailto:{% if contact and contact.email %}{{ contact.email }}{% else %}support@corex.com{% endif %}" class="text-light text-decoration-none fw-semibold" style="font-size: 0.9rem; transition: color 0.3s;" onmouseover="this.style.color='#0ea5e9'" onmouseout="this.style.color='#f8f9fa'">
+                    {% if contact and contact.email %}{{ contact.email }}{% else %}support@corex.com{% endif %}
+                </a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Location Card -->
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card h-100 p-4 border-secondary border-opacity-25 text-center" style="background: rgba(15, 23, 42, 0.85); border-radius: 16px;">
+            <div class="mb-3 text-info fs-1">
+                <i class="bi bi-geo-alt-fill"></i>
+            </div>
+            <h5 class="fw-bold text-white mb-3">Location</h5>
+            <p class="text-light mb-0 pt-2" style="opacity: 0.9; font-size: 0.95rem;">
+                {% if contact and contact.address %}{{ contact.address }}{% else %}Sri Lanka{% endif %}
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
