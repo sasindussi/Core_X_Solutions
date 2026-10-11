@@ -5,7 +5,7 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='.', static_folder='.')
 
 
 # Secret key for session management
