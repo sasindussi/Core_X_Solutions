@@ -1,17 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
+import psycopg2
+from psycopg2.extras import RealDictCursor
 import os
-import traceback
-
-try:
-  import psycopg2
-  from psycopg2.extras import RealDictCursor
-except ImportError:
-  psycopg2 = None
-  RealDictCursor = None
 
 app = Flask(__name__)
+
 
 # Secret key for session management
 app.secret_key = 'corex_solutions_secret_key_2026'
